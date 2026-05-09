@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Oman Quest | رحلة عُمان</title>
+
+  <style>
+    :root {
+      --oman-red: #8e1b1b;
+      --oman-red-deep: #4a0d0d;
+      --oman-green: #0e4b3a;
+      --oman-green-deep: #071e18;
+      --gold: #c8102e;
+      --gold-soft: #e14b5f;
+      --cream: #f5e9d0;
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.11);
+      --glass-strong: rgba(255, 255, 255, 0.16);
+      --border: rgba(255, 255, 255, 0.22);
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      font-family: Tahoma, Arial, sans-serif;
+      color: var(--cream);
+      background: #050403;
+      overflow-x: hidden;
+    }
+
+    .start-page {
+      min-height: 100vh;
+      min-height: 100svh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(18px, env(safe-area-inset-top)) 16px max(22px, env(safe-area-inset-bottom));
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .start-page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.42)),
+        linear-gradient(90deg, rgba(7, 30, 24, 0.45), rgba(142, 27, 27, 0.22)),
+        url("images/oman-passport-hero.jpg") center / cover no-repeat;
+      transform: scale(1.02);
+    }
+
+    .start-page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(200, 16, 46, 0.26), transparent 24%),
+        radial-gradient(circle at 50% 70%, rgba(142, 27, 27, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.72));
+      pointer-events: none;
+    }
+
+    .pattern {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(45deg, rgba(245, 233, 208, 0.24) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(245, 233, 208, 0.24) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(245, 233, 208, 0.24) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(245, 233, 208, 0.24) 75%);
+      background-size: 42px 42px;
+      background-position: 0 0, 0 21px, 21px -21px, -21px 0;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+    }
+
+    .hero-card {
+      width: min(520px, 100%);
+      min-height: min(760px, calc(100svh - 40px));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 34px;
+      padding: 26px 18px 24px;
+      text-align: center;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(5px);
+      animation: rise 0.75s ease both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(22px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .language-switcher {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .lang-btn {
+      border: 0;
+      min-height: 42px;
+      border-radius: 999px;
+      color: rgba(245, 233, 208, 0.8);
+      background: transparent;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .lang-btn.active {
+      color: #241706;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 10px 26px rgba(212, 175, 55, 0.22);
+    }
+
+    .brand-mark {
+      width: 104px;
+      height: 104px;
+      margin: 28px auto 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      position: relative;
+      background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,0.22), transparent 32%),
+        linear-gradient(135deg, rgba(200,16,46,0.25), rgba(14,75,58,0.24));
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 0 38px rgba(200,16,46,0.22),
+        0 18px 45px rgba(0,0,0,0.35);
+      overflow: visible;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -7px;
+      border-radius: inherit;
+      border: 1px solid rgba(225, 75, 95, 0.42);
+      animation: pulse 2.4s ease infinite;
+      box-shadow: 0 0 24px rgba(200,16,46,0.18);
+    }
+
+    .brand-mark::after {
+      inset: -15px;
+      opacity: 0.42;
+      border-color: rgba(14,75,58,0.32);
+      animation-delay: 0.45s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.98); opacity: 0.45; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    .brand-symbol {
+      font-size: 48px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 auto 12px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: rgba(245, 233, 208, 0.86);
+      background: rgba(0,0,0,0.26);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(54px, 16vw, 88px);
+      line-height: 0.88;
+      letter-spacing: -2.8px;
+      font-weight: 1000;
+      color: var(--white);
+      text-shadow: 0 12px 42px rgba(0,0,0,0.56);
+    }
+
+    h1 span {
+      display: block;
+      color: #ffffff;
+      text-shadow: 0 0 28px rgba(200,16,46,0.35);
+    }
+
+    .lead {
+      margin: 18px auto 0;
+      max-width: 440px;
+      color: rgba(245, 233, 208, 0.9);
+      font-size: clamp(17px, 4.4vw, 22px);
+      line-height: 1.75;
+      font-weight: 700;
+    }
+
+    .sublead {
+      margin: 10px auto 0;
+      max-width: 390px;
+      color: rgba(245, 233, 208, 0.67);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .quest-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 32px;
+    }
+
+    .info-pill {
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px 7px;
+      border-radius: 22px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.13);
+    }
+
+    .info-icon { font-size: 22px; }
+    .info-text {
+      font-size: 12px;
+      color: rgba(245, 233, 208, 0.78);
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .start-actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 64px;
+      border: 0;
+      border-radius: 24px;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 1000;
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .btn.primary {
+      color: #241706;
+      background: linear-gradient(135deg, #ffffff, var(--gold-soft));
+      box-shadow: 0 18px 40px rgba(200,16,46,0.28);
+    }
+
+    .btn.secondary {
+      color: var(--cream);
+      background: rgba(255,255,255,0.11);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .btn:active {
+      transform: scale(0.985);
+      filter: brightness(1.06);
+    }
+
+    .tiny-note {
+      margin: 0;
+      color: rgba(245, 233, 208, 0.55);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 430px) {
+      .start-page {
+        align-items: stretch;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .hero-card {
+        min-height: calc(100svh - 34px);
+        border-radius: 30px;
+        gap: 26px;
+        padding-top: 22px;
+      }
+
+      .brand-mark {
+        width: 94px;
+        height: 94px;
+        margin: 24px auto 22px;
+      }
+
+      .brand-symbol {
+        font-size: 42px;
+      }
+
+      .quest-info {
+        gap: 7px;
+      }
+
+      .info-pill {
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="start-page">
+    <div class="pattern"></div>
+
+    <section class="hero-card" aria-label="Oman Quest start page">
+      <div>
+        <nav class="language-switcher" aria-label="Language selector">
+          <button class="lang-btn active" type="button" onclick="setLanguage('ar')">عربي</button>
+          <button class="lang-btn" type="button" onclick="setLanguage('en')">English</button>
+          <button class="lang-btn" type="button" onclick="setLanguage('tr')">Türkçe</button>
+        </nav>
+
+        <div class="brand-mark" aria-hidden="true">
+          <div class="brand-symbol">🇴🇲</div>
+        </div>
+
+        <p class="eyebrow" data-i18n="eyebrow">أهلاً بكم في بوث سلطنة عُمان</p>
+        <h1><span>Oman</span>Quest</h1>
+        <p class="lead" data-i18n="lead">وراء كل تحدٍ رقم… ووراء كل رقم مفتاح للكنز.</p>
+        
+
+        <div class="quest-info" aria-label="Quest highlights">
+          <div class="info-pill">
+            <span class="info-icon">❓</span>
+            <span class="info-text" data-i18n="pill1">أجب على التحديات</span>
+          </div>
+          <div class="info-pill">
+            <span class="info-icon">🔢</span>
+            <span class="info-text" data-i18n="pill2">اجمع الأرقام</span>
+          </div>
+          <div class="info-pill">
+            <span class="info-icon">🔓</span>
+            <span class="info-text" data-i18n="pill3">افتح الكنز</span>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="start-actions">
+        <button class="btn primary" type="button" onclick="startQuest()" data-i18n="startButton">ابدأ الرحلة ✨</button>
+        
+        <p class="tiny-note" data-i18n="note">Made By Faisal Al Breiki</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      ar: {
+        dir: "rtl",
+        lang: "ar",
+        eyebrow: "أهلاً بكم في بوث سلطنة عمان",
+        lead: "وراء كل تحدٍ رقم… ووراء كل رقم مفتاح للكنز.",
+        sublead: "تجربة سريعة وممتعة للزوار: اختر بطاقة، جاوب على تحدي بصري، واجمع 3 رموز.",
+        pill1: "أجب على التحدي",
+        pill2: "اجمع الأرقام",
+        pill3: "افتح الصندوق",
+        startButton: "ابدأ الرحلة ✨",
+        howButton: "كيف تعمل؟",
+        note: "Made By Faisal Al Breiki",
+        howAlert: "اختر بطاقة، جاوب على السؤال، واجمع 3 رموز للحصول على كود فتح الصندوق."
+      },
+      en: {
+        dir: "ltr",
+        lang: "en",
+        eyebrow: "Welcome to the Sultanate of Oman Booth",
+        lead: "Behind every challenge is a number… and behind every number is a key to the treasure.",
+        sublead: "A quick visitor experience: pick a card, answer a visual challenge, and collect 3 symbols.",
+        pill1: "Answer the challenge",
+        pill2: "Collect the numbers",
+        pill3: "Unlock the box",
+        startButton: "Start Quest ✨",
+        howButton: "How it works",
+        note: "Made By Faisal Al Breiki",
+        howAlert: "Pick a card, answer the question, and collect 3 symbols to receive the chest unlock code."
+      },
+      tr: {
+        dir: "ltr",
+        lang: "tr",
+        eyebrow: "Umman Sultanlığı Standına Hoş Geldiniz",
+        lead: "Her görevin arkasında bir sayı… ve her sayının arkasında hazineye açılan bir anahtar var.",
+        sublead: "Ziyaretçiler için hızlı bir deneyim: kart seç, görsel soruyu yanıtla ve 3 sembol topla.",
+        pill1: "Görevi cevapla",
+        pill2: "Sayıları topla",
+        pill3: "Kutuyu aç",
+        startButton: "Keşfe Başla ✨",
+        howButton: "Nasıl çalışır?",
+        note: "Made By Faisal Al Breiki",
+        howAlert: "Bir kart seç, soruyu cevapla ve sandık açma kodunu almak için 3 sembol topla."
+      }
+    };
+
+    let currentLanguage = "ar";
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      localStorage.setItem("omanQuestLanguage", language);
+
+      const t = translations[language];
+
+      document.documentElement.lang = t.lang;
+      document.documentElement.dir = t.dir;
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        element.textContent = t[key];
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.classList.remove("active");
+      });
+
+      document.querySelector(`.lang-btn[onclick="setLanguage('${language}')"]`).classList.add("active");
+    }
+
+    function startQuest() {
+      if (navigator.vibrate) navigator.vibrate(35);
+      const savedLanguage = localStorage.getItem("omanQuestLanguage");
+
+    if (savedLanguage && translations[savedLanguage]) {
+        setLanguage(savedLanguage);
+        }
+        window.location.href = "cards.html";
+
+    }
+
+    function showHowItWorks() {
+      alert(translations[currentLanguage].howAlert);
+    }
+  </script>
+</body>
+</html>

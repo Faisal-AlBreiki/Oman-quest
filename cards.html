@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Oman Quest | Cards</title>
+
+  <style>
+    :root {
+      --oman-red: #c8102e;
+      --oman-red-soft: #e14b5f;
+      --oman-green: #0e4b3a;
+      --cream: #f5e9d0;
+      --white: #ffffff;
+      --border: rgba(255,255,255,0.2);
+      --shadow: 0 28px 90px rgba(0,0,0,0.48);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; min-height: 100%; }
+
+    body {
+      min-height: 100vh;
+      font-family: Tahoma, Arial, sans-serif;
+      color: var(--cream);
+      background: #050403;
+      overflow-x: hidden;
+    }
+
+    .cards-page {
+      min-height: 100vh;
+      min-height: 100svh;
+      position: relative;
+      padding: max(18px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
+      isolation: isolate;
+      overflow-x: hidden;
+    }
+
+    .cards-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.78)),
+        linear-gradient(90deg, rgba(7,30,24,0.58), rgba(142,27,27,0.28)),
+        url("images/oman-passport-hero.jpg") center / cover no-repeat;
+      filter: blur(5px) saturate(0.95) brightness(0.82);
+      transform: scale(1.05);
+    }
+
+    .cards-page::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(200,16,46,0.22), transparent 28%),
+        radial-gradient(circle at 70% 76%, rgba(14,75,58,0.32), transparent 34%),
+        linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.48));
+    }
+
+    .shell {
+      width: min(560px, 100%);
+      min-height: calc(100svh - 40px);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: rise 0.65s ease both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .back-btn, .lang-btn {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.09);
+      color: var(--cream);
+      min-height: 44px;
+      border-radius: 999px;
+      padding: 0 14px;
+      font-weight: 900;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+
+    .language-switcher {
+      display: flex;
+      gap: 6px;
+      padding: 5px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .lang-btn {
+      min-height: 36px;
+      padding: 0 10px;
+      font-size: 12px;
+      background: transparent;
+      border: 0;
+      color: rgba(245,233,208,0.7);
+    }
+
+    .lang-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--oman-red), var(--oman-red-soft));
+      box-shadow: 0 10px 24px rgba(200,16,46,0.24);
+    }
+
+    .header-card, .question-panel, .win-panel {
+      border-radius: 30px;
+      padding: 20px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(5px);
+    }
+
+    .mini-badge {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 13px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      font-size: 28px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(200,16,46,0.24), rgba(14,75,58,0.24));
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: 0 0 28px rgba(200,16,46,0.16);
+    }
+
+    .mini-badge::before,
+    .mini-badge::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: inherit;
+      border: 1px solid rgba(225,75,95,0.42);
+      animation: pulse 2.4s ease infinite;
+      box-shadow: 0 0 24px rgba(200,16,46,0.18);
+    }
+
+    .mini-badge::after {
+      inset: -12px;
+      opacity: 0.36;
+      border-color: rgba(14,75,58,0.32);
+      animation-delay: 0.45s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.98); opacity: 0.45; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(34px, 10vw, 54px);
+      line-height: 0.95;
+      letter-spacing: -1.6px;
+      color: #fff;
+      text-shadow: 0 10px 34px rgba(0,0,0,0.55);
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      text-align: center;
+      max-width: 390px;
+      color: rgba(245,233,208,0.78);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .progress-card {
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 22px;
+      background: rgba(0,0,0,0.24);
+      border: 1px solid rgba(255,255,255,0.13);
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: rgba(245,233,208,0.76);
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .code-slot {
+      height: 44px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(245,233,208,0.55);
+      font-size: 22px;
+      font-weight: 1000;
+    }
+
+    .code-slot.filled {
+      color: #fff;
+      background: linear-gradient(135deg, var(--oman-green), var(--oman-red));
+      box-shadow: 0 0 20px rgba(200,16,46,0.28);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding-bottom: 8px;
+    }
+
+    .mission-card {
+      aspect-ratio: 1 / 1.12;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.34);
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.18s ease, filter 0.18s ease, border-color 0.18s ease;
+    }
+
+    .mission-card:active { transform: scale(0.985); }
+
+    .mission-card.used {
+      border-color: rgba(14,75,58,0.72);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.34),
+        0 0 22px rgba(14,75,58,0.28);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.72) saturate(1.05);
+      transform: scale(1.02);
+    }
+
+    .mission-card:not(.used) .card-bg {
+      filter: brightness(0.52) saturate(0.9);
+    }
+
+    .card-shade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.28)),
+        radial-gradient(circle at 50% 25%, rgba(200,16,46,0.14), transparent 45%);
+    }
+
+    .corner-icon {
+      position: absolute;
+      top: 9px;
+      inset-inline-end: 9px;
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(5px);
+      font-size: 18px;
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.24);
+    }
+
+    .mission-card.used .corner-icon {
+      background: rgba(14,75,58,0.72);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    .question-panel {
+      display: none;
+    }
+
+    .win-panel {
+      display: none;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-panel.active, .win-panel.active {
+      display: block;
+      animation: rise 0.45s ease both;
+    }
+
+    .celebration {
+      font-size: 58px;
+      margin-bottom: 12px;
+      animation: celebrate 1.2s ease infinite;
+    }
+
+    @keyframes celebrate {
+      0%, 100% { transform: rotate(0) scale(1); }
+      35% { transform: rotate(-8deg) scale(1.08); }
+      70% { transform: rotate(8deg) scale(1.08); }
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(24px, 6vw, 34px);
+      color: #fff;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .question-note {
+      margin: 10px auto 18px;
+      text-align: center;
+      color: rgba(245,233,208,0.72);
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    }
+
+    .option {
+    min-height: 58px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: center;
+    overflow: hidden;
+    }
+
+.option img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      font-weight: 900;
+      line-height: 1.7;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.correct { background: rgba(14,75,58,0.32); border: 1px solid rgba(14,75,58,0.6); }
+    .feedback.wrong { background: rgba(200,16,46,0.22); border: 1px solid rgba(225,75,95,0.45); }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .main-btn {
+      width: 100%;
+      min-height: 58px;
+      border: 0;
+      border-radius: 22px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--oman-red), var(--oman-red-soft));
+      font-size: 16px;
+      font-weight: 1000;
+      cursor: pointer;
+    }
+
+    .main-btn.secondary {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.17);
+    }
+
+    .final-code {
+      margin: 18px auto;
+      direction: ltr;
+      text-align: center;
+      font-size: clamp(54px, 18vw, 92px);
+      letter-spacing: 0.2em;
+      text-indent: 0.2em;
+      color: #fff;
+      font-weight: 1000;
+      text-shadow: 0 0 28px rgba(200,16,46,0.34);
+    }
+
+    .footer-note {
+      text-align: center;
+      margin: auto 0 0;
+      color: rgba(245,233,208,0.5);
+      font-size: 12px;
+      padding: 8px 0 0;
+    }
+
+    @media (max-width: 390px) {
+      .cards-grid { gap: 8px; }
+      .mission-card { border-radius: 21px; }
+      .corner-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        top: 7px;
+        inset-inline-end: 7px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="cards-page">
+    <audio id="winSound" src="images/win.mp3" preload="auto"></audio>
+
+    <section class="shell">
+      <header class="topbar">
+        <button class="back-btn" type="button" onclick="goBack()" data-i18n="back">رجوع</button>
+
+        <nav class="language-switcher">
+          <button class="lang-btn active" type="button" onclick="setLanguage('ar')">عربي</button>
+          <button class="lang-btn" type="button" onclick="setLanguage('en')">EN</button>
+          <button class="lang-btn" type="button" onclick="setLanguage('tr')">TR</button>
+        </nav>
+      </header>
+
+      <section class="header-card" id="cardsHeader">
+        <div class="mini-badge">🇴🇲</div>
+        <h1>Oman Quest</h1>
+        <p class="subtitle" data-i18n="subtitle">اختر بطاقة وابدأ التحدي. كل إجابة صحيحة تكشف رقمًا من كود الصندوق.</p>
+
+        <div class="progress-card">
+          <div class="progress-meta">
+            <span data-i18n="progressLabel">الأرقام المفتوحة</span>
+            <span id="progressText">0/3</span>
+          </div>
+          <div class="progress-row code-progress">
+            <div class="code-slot" id="slot0">?</div>
+            <div class="code-slot" id="slot1">?</div>
+            <div class="code-slot" id="slot2">?</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cards-grid" id="cardsGrid"></section>
+
+      <section class="question-panel" id="questionPanel">
+        <h2 class="question-title" id="questionTitle"></h2>
+        <p class="question-note" id="questionNote"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+
+        <div class="actions">
+          <button class="main-btn secondary" onclick="closeQuestion()" data-i18n="chooseAnother">اختر بطاقة أخرى</button>
+        </div>
+      </section>
+
+      <section class="win-panel" id="winPanel">
+        <div class="celebration">🇴🇲</div>
+        <div class="mini-badge">🔓</div>
+        <h1 data-i18n="winTitle">تم فتح الكود</h1>
+        <p class="subtitle" data-i18n="winSubtitle">اعرض الكود عند البوث وافتح الصندوق.</p>
+        <div class="final-code" id="finalCode">000</div>
+      </section>
+
+      <p class="footer-note">Made By Faisal Al Breiki</p>
+    </section>
+  </main>
+
+  <script>
+    const FINAL_CODE = "968";
+
+    const translations = {
+      ar: {
+        dir: "rtl",
+        lang: "ar",
+        back: "رجوع",
+        subtitle: "اختر بطاقة وابدأ التحدي. كل إجابة صحيحة تفتح جزءًا من كود الصندوق.",
+        progressLabel: "الأرقام المفتوحة",
+        lockedNote: "أجب على السؤال لفتح الرقم",
+        chooseAnother: "اختر بطاقة أخرى",
+        correct: "إجابة صحيحة! تم فتح رقم من الكود",
+        wrong: "قريب جدًا! جرّب مرة ثانية.",
+        winTitle: "تم فتح الكود",
+        winSubtitle: "اعرض الكود عند البوث وافتح الصندوق."
+      },
+      en: {
+        dir: "ltr",
+        lang: "en",
+        back: "Back",
+        subtitle: "Pick a card and start the challenge. Each correct answer unlocks part of the box code.",
+        progressLabel: "Unlocked numbers",
+        lockedNote: "Answer the question to unlock a number",
+        chooseAnother: "Choose another card",
+        correct: "Correct! A code number has been unlocked",
+        wrong: "Very close! Try again.",
+        winTitle: "Code Unlocked",
+        winSubtitle: "Show the code at the booth and unlock the box."
+      },
+      tr: {
+        dir: "ltr",
+        lang: "tr",
+        back: "Geri",
+        subtitle: "Bir kart seç ve göreve başla. Her doğru cevap kutu kodunun bir parçasını açar.",
+        progressLabel: "Açılan sayılar",
+        lockedNote: "Bir sayıyı açmak için soruyu cevapla",
+        chooseAnother: "Başka kart seç",
+        correct: "Doğru! Kodun bir sayısı açıldı",
+        wrong: "Çok yaklaştın! Tekrar dene.",
+        winTitle: "Kod Açıldı",
+        winSubtitle: "Kodu standda göster ve kutuyu aç."
+      }
+    };
+
+    const cards = [
+    {
+    id: 1,
+    image: "images/card-oman-emblem.png",
+    q: {
+        ar: "أي صورة تمثل الزي العُماني التقليدي؟",
+        en: "Which image represents traditional Omani clothing?",
+        tr: "Hangi görsel geleneksel Umman kıyafetini temsil ediyor?"
+    },
+    options: {
+        ar: [
+        { text: "", image: "images/omani-dress.jpg" },
+        { text: "", image: "images/kimono.png" },
+        { text: "", image: "images/hanbok.jpg" },
+        { text: "", image: "images/suit.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/omani-dress.jpg" },
+        { text: "", image: "images/kimono.png" },
+        { text: "", image: "images/hanbok.jpg" },
+        { text: "", image: "images/suit.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/omani-dress.jpg" },
+        { text: "", image: "images/kimono.png" },
+        { text: "", image: "images/hanbok.jpg" },
+        { text: "", image: "images/suit.jpg" }
+        ]
+    },
+    answer: 0
+    },
+      {
+        id: 2,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تعتقد انها من سلطنة عُمان؟",
+            en: "Which image is from Oman?",
+            tr: "Hangi görsel Umman’dan?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/mct.jpg" },
+        { text: "", image: "images/london.jpg" },
+        { text: "", image: "images/moscow.jpg" },
+        { text: "", image: "images/paris.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/mct.jpg" },
+        { text: "", image: "images/london.jpg" },
+        { text: "", image: "images/moscow.jpg" },
+        { text: "", image: "images/paris.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/mct.jpg" },
+        { text: "", image: "images/london.jpg" },
+        { text: "", image: "images/moscow.jpg" },
+        { text: "", image: "images/paris.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 3,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل الخنجر العُماني؟",
+            en: "Which image represents the Omani Khanjar?",
+            tr: "Hangi görsel Umman Hançeri’ni temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/Khanjar.jpg" },
+        { text: "", image: "images/axe.jpg" },
+        { text: "", image: "images/skeen.jpg" },
+        { text: "", image: "images/saif.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/Khanjar.jpg" },
+        { text: "", image: "images/axe.jpg" },
+        { text: "", image: "images/skeen.jpg" },
+        { text: "", image: "images/saif.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/Khanjar.jpg" },
+        { text: "", image: "images/axe.jpg" },
+        { text: "", image: "images/skeen.jpg" },
+        { text: "", image: "images/saif.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 4,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل قلعة عُمانية قديمة؟",
+            en: "Which image represents an old Omani fort?",
+            tr: "Hangi görsel eski bir Umman kalesini temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/fort.jpg" },
+        { text: "", image: "images/m3bd.jpg" },
+        { text: "", image: "images/roma.jpg" },
+        { text: "", image: "images/galata.jpeg" }
+        ],
+        en: [
+        { text: "", image: "images/fort.jpg" },
+        { text: "", image: "images/m3bd.jpg" },
+        { text: "", image: "images/roma.jpg" },
+        { text: "", image: "images/galata.jpeg" }
+        ],
+        tr: [
+        { text: "", image: "images/fort.jpg" },
+        { text: "", image: "images/m3bd.jpg" },
+        { text: "", image: "images/roma.jpg" },
+        { text: "", image: "images/galata.jpeg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 5,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل اللبان العُماني؟",
+            en: "Which image represents Omani frankincense?",
+            tr: "Hangi görsel Umman günlük tütsüsünü temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/lban.jpg" },
+        { text: "", image: "images/bk2.jpg" },
+        { text: "", image: "images/bk3.jpg" },
+        { text: "", image: "images/bk1.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/lban.jpg" },
+        { text: "", image: "images/bk2.jpg" },
+        { text: "", image: "images/bk3.jpg" },
+        { text: "", image: "images/bk1.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/lban.jpg" },
+        { text: "", image: "images/bk2.jpg" },
+        { text: "", image: "images/bk3.jpg" },
+        { text: "", image: "images/bk1.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 6,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل القهوة العُمانية؟",
+            en: "Which image represents Omani coffee?",
+            tr: "Hangi görsel Umman kahvesini temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/coffee.jpg" },
+        { text: "", image: "images/c1.jpg" },
+        { text: "", image: "images/c2.jpg" },
+        { text: "", image: "images/c3.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/coffee.jpg" },
+        { text: "", image: "images/c1.jpg" },
+        { text: "", image: "images/c2.jpg" },
+        { text: "", image: "images/c3.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/coffee.jpg" },
+        { text: "", image: "images/c1.jpg" },
+        { text: "", image: "images/c2.jpg" },
+        { text: "", image: "images/c3.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 7,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل الشعار الوطني لسلطنة عُمان؟",
+            en: "Which image represents the national emblem of Oman?",
+            tr: "Hangi görsel Umman’ın ulusal armasını temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/card-oman-emblem.png" },
+        { text: "", image: "images/sa.jpg" },
+        { text: "", image: "images/bh.jpg" },
+        { text: "", image: "images/uae.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/card-oman-emblem.png" },
+        { text: "", image: "images/sa.jpg" },
+        { text: "", image: "images/bh.jpg" },
+        { text: "", image: "images/uae.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/card-oman-emblem.png" },
+        { text: "", image: "images/sa.jpg" },
+        { text: "", image: "images/bh.jpg" },
+        { text: "", image: "images/uae.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 8,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل الحلوى العُمانية؟",
+            en: "Which image represents Omani Halwa?",
+            tr: "Hangi görsel Umman Helvasını temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/halwa.jpg" },
+        { text: "", image: "images/h1.jpg" },
+        { text: "", image: "images/h2.jpg" },
+        { text: "", image: "images/h3.jpg" }
+        ],
+        en: [
+        { text: "", image: "images/halwa.jpg" },
+        { text: "", image: "images/h1.jpg" },
+        { text: "", image: "images/h2.jpg" },
+        { text: "", image: "images/h3.jpg" }
+        ],
+        tr: [
+        { text: "", image: "images/halwa.jpg" },
+        { text: "", image: "images/h1.jpg" },
+        { text: "", image: "images/h2.jpg" },
+        { text: "", image: "images/h3.jpg" }
+        ]
+        },
+        answer: 0
+      },
+      {
+        id: 9,
+        image: "images/card-oman-emblem.png",
+        q: {
+            ar: "أي صورة تمثل علم سلطنة عُمان؟",
+            en: "Which image represents the flag of Oman?",
+            tr: "Hangi görsel Umman bayrağını temsil ediyor?"
+        },
+        options: {
+          ar: [
+        { text: "", image: "images/oman.png" },
+        { text: "", image: "images/f1.png" },
+        { text: "", image: "images/f2.png" },
+        { text: "", image: "images/f3.png" }
+        ],
+        en: [
+        { text: "", image: "images/oman.png" },
+        { text: "", image: "images/f1.png" },
+        { text: "", image: "images/f2.png" },
+        { text: "", image: "images/f3.png" }
+        ],
+        tr: [
+        { text: "", image: "images/oman.png" },
+        { text: "", image: "images/f1.png" },
+        { text: "", image: "images/f2.png" },
+        { text: "", image: "images/f3.png" }
+        ]
+        },
+        answer: 0
+      }
+    ];
+
+    let currentLanguage = localStorage.getItem("omanQuestLanguage") || "ar";
+    let unlockedCards = [];
+    let currentCard = null;
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      localStorage.setItem("omanQuestLanguage", language);
+
+      const t = translations[language];
+      document.documentElement.lang = t.lang;
+      document.documentElement.dir = t.dir;
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        element.textContent = t[key];
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.classList.remove("active");
+      });
+
+      document.querySelector(`.lang-btn[onclick="setLanguage('${language}')"]`).classList.add("active");
+
+      renderCards();
+      if (currentCard) renderQuestion(currentCard);
+    }
+
+    function renderCards() {
+      const grid = document.getElementById("cardsGrid");
+      grid.innerHTML = "";
+
+      cards.forEach((card) => {
+        const isUnlocked = unlockedCards.includes(card.id);
+
+        const button = document.createElement("button");
+        button.className = "mission-card" + (isUnlocked ? " used" : "");
+        button.type = "button";
+        button.onclick = () => selectCard(card.id);
+
+        button.innerHTML = `
+          <img class="card-bg" src="${card.image}" alt="Oman Quest Card">
+          <div class="card-shade"></div>
+          <span class="corner-icon">${isUnlocked ? "✓" : "🔒"}</span>
+        `;
+
+        grid.appendChild(button);
+      });
+
+      updateProgress();
+    }
+
+    function selectCard(cardId) {
+      if (unlockedCards.includes(cardId)) return;
+      if (navigator.vibrate) navigator.vibrate(30);
+
+      currentCard = cards.find((card) => card.id === cardId);
+      renderQuestion(currentCard);
+
+      document.getElementById("cardsGrid").style.display = "none";
+      document.getElementById("questionPanel").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion(card) {
+      const t = translations[currentLanguage];
+      const optionsBox = document.getElementById("options");
+      const feedback = document.getElementById("feedback");
+
+      document.getElementById("questionTitle").textContent = card.q[currentLanguage];
+      document.getElementById("questionNote").textContent = t.lockedNote;
+
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      optionsBox.innerHTML = "";
+
+        const options = card.options[currentLanguage].map((option, index) => ({
+        text: typeof option === "string" ? option : option.text,
+        image: typeof option === "string" ? null : option.image,
+        originalIndex: index
+        }));
+
+      shuffle(options).forEach((option) => {
+        const btn = document.createElement("button");
+        btn.className = "option";
+        btn.type = "button";
+        btn.innerHTML = option.image
+  ? `<img src="${option.image}" alt="${option.text}"><span>${option.text}</span>`
+  : option.text;
+        btn.onclick = () => answerQuestion(option.originalIndex);
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function answerQuestion(selectedIndex) {
+      const t = translations[currentLanguage];
+      const feedback = document.getElementById("feedback");
+      const isCorrect = selectedIndex === currentCard.answer;
+
+      if (!isCorrect) {
+        if (navigator.vibrate) navigator.vibrate(80);
+        feedback.className = "feedback wrong show";
+        feedback.textContent = t.wrong;
+        return;
+      }
+
+      if (navigator.vibrate) navigator.vibrate([40, 30, 40]);
+
+      if (!unlockedCards.includes(currentCard.id) && unlockedCards.length < 3) {
+        unlockedCards.push(currentCard.id);
+      }
+
+      feedback.className = "feedback correct show";
+      feedback.textContent = t.correct;
+
+      updateProgress();
+
+      setTimeout(() => {
+        closeQuestion();
+
+        if (unlockedCards.length >= 3) {
+          showWin();
+        }
+      }, 950);
+    }
+
+    function closeQuestion() {
+      currentCard = null;
+      document.getElementById("questionPanel").classList.remove("active");
+      document.getElementById("cardsGrid").style.display = "grid";
+      renderCards();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateProgress() {
+      const count = Math.min(unlockedCards.length, 3);
+      document.getElementById("progressText").textContent = `${count}/3`;
+
+      const visibleCode = FINAL_CODE.split("");
+
+      for (let i = 0; i < 3; i++) {
+        const slot = document.getElementById(`slot${i}`);
+
+        if (i < count) {
+          slot.textContent = visibleCode[i];
+          slot.classList.add("filled");
+        } else {
+          slot.textContent = "?";
+          slot.classList.remove("filled");
+        }
+      }
+    }
+
+    function showWin() {
+      document.getElementById("cardsHeader").style.display = "none";
+      document.getElementById("cardsGrid").style.display = "none";
+      document.getElementById("questionPanel").classList.remove("active");
+      document.getElementById("winPanel").classList.add("active");
+      document.getElementById("finalCode").textContent = FINAL_CODE;
+
+      const winSound = document.getElementById("winSound");
+      if (winSound) {
+        winSound.currentTime = 0;
+        winSound.play().catch(() => {});
+      }
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    localStorage.removeItem("omanQuestUnlockedCards");
+    setLanguage(currentLanguage);
+  </script>
+</body>
+</html>
